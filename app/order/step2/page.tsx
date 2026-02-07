@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 
-export default function OrderStep2() {
+function OrderStep2Content() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -101,6 +101,14 @@ export default function OrderStep2() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function OrderStep2() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">로딩 중...</div>}>
+      <OrderStep2Content />
+    </Suspense>
   );
 }
 

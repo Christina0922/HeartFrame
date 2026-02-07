@@ -1,10 +1,10 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { PricePlan, PRICE_PLANS } from '@/lib/types';
 
-export default function Pricing() {
+function PricingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -95,3 +95,10 @@ export default function Pricing() {
   );
 }
 
+export default function Pricing() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">로딩 중...</div>}>
+      <PricingContent />
+    </Suspense>
+  );
+}

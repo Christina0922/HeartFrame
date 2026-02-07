@@ -4,7 +4,7 @@ import { getOrderByToken, updateOrder } from '@/lib/db';
 import { PRICE_PLANS } from '@/lib/types';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2024-06-20.acacia',
+  apiVersion: '2023-10-16',
 });
 
 export async function POST(request: NextRequest) {

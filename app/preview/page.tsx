@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
 interface PreviewData {
   poem_text: string;
@@ -9,7 +9,7 @@ interface PreviewData {
   recipient: string;
 }
 
-export default function Preview() {
+function PreviewContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -163,3 +163,10 @@ export default function Preview() {
   );
 }
 
+export default function Preview() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">로딩 중...</div>}>
+      <PreviewContent />
+    </Suspense>
+  );
+}

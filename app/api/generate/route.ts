@@ -59,12 +59,13 @@ export async function POST(request: NextRequest) {
 
     // 재시도인 경우
     if (validated.retry && validated.token) {
-      const order = getOrderByToken(validated.token);
+      const token = validated.token; // 타입 가드
+      const order = getOrderByToken(token);
       if (!order || order.status !== 'preview') {
         return NextResponse.json({ error: 'Invalid order' }, { status: 400 });
       }
 
-      updateOrder(validated.token, { status: 'generating' });
+      updateOrder(token, { status: 'generating' });
 
       // 백그라운드에서 재생성
       setTimeout(async () => {
@@ -84,17 +85,17 @@ export async function POST(request: NextRequest) {
             poem_text,
           });
 
-          updateOrder(validated.token, {
+          updateOrder(token, {
             poem_text,
             image_url,
             status: 'preview',
           });
         } catch (error) {
-          updateOrder(validated.token, { status: 'failed' });
+          updateOrder(token, { status: 'failed' });
         }
       }, 100);
 
-      return NextResponse.json({ token: validated.token, status: 'generating' });
+      return NextResponse.json({ token, status: 'generating' });
     }
 
     // 새 주문 생성

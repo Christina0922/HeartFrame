@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
-export default function Generate() {
+function GenerateContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -83,6 +83,14 @@ export default function Generate() {
         <p className="text-gray-600">{message}</p>
       </div>
     </div>
+  );
+}
+
+export default function Generate() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">로딩 중...</div>}>
+      <GenerateContent />
+    </Suspense>
   );
 }
 

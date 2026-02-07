@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
 interface CompleteData {
   poem_text: string;
@@ -10,7 +10,7 @@ interface CompleteData {
   share_token: string;
 }
 
-export default function Complete() {
+function CompleteContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -129,3 +129,10 @@ export default function Complete() {
   );
 }
 
+export default function Complete() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">로딩 중...</div>}>
+      <CompleteContent />
+    </Suspense>
+  );
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { Recipient, Mood } from '@/lib/types';
 
 const DATE_PRESETS = [
@@ -17,7 +17,7 @@ const MOODS: { value: Mood; label: string }[] = [
   { value: '밝은', label: '밝은' },
 ];
 
-export default function OrderStep1() {
+function OrderStep1Content() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialRecipient = (searchParams.get('recipient') as Recipient) || '기타';
@@ -142,6 +142,14 @@ export default function OrderStep1() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function OrderStep1() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">로딩 중...</div>}>
+      <OrderStep1Content />
+    </Suspense>
   );
 }
 
